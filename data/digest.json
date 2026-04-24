@@ -1,0 +1,11 @@
+{
+  "date": "Loading...",
+  "weather": {"temp": 0, "description": "loading"},
+  "pubs": [],
+  "events": [],
+  "sport": [],
+  "markets": [],
+  "news": [],
+  "availability": [],
+  "thought": {"question": "The Bando Brief is loading for the first time...", "context": "Run the Make.com scenario to populate this."}
+}
