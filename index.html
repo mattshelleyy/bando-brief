@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bow House — Daily Digest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0d;
+    --ink2: #3a3834;
+    --ink3: #7a7670;
+    --paper: #f7f4ef;
+    --paper2: #edeae3;
+    --paper3: #e2ddd5;
+    --rule: rgba(15,14,13,0.12);
+    --red: #c0392b;
+    --green: #1a6b3c;
+    --amber: #b35c00;
+    --blue: #1a3f6b;
+    --accent: #c0392b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* ── masthead ── */
+  .masthead {
+    border-bottom: 3px solid var(--ink);
+    padding: 28px 40px 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    animation: fadeDown 0.5s ease both;
+  }
+  .masthead-left { flex: 1; }
+  .masthead-kicker {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 6px;
+  }
+  .masthead-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .masthead-title span { color: var(--accent); }
+  .masthead-right {
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ink3);
+    line-height: 1.8;
+    padding-bottom: 2px;
+  }
+  .masthead-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink2);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .edition-bar {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 7px 40px;
+    display: flex;
+    gap: 32px;
+    overflow: hidden;
+    animation: fadeDown 0.5s 0.1s ease both;
+  }
+  .edition-bar span { opacity: 0.6; }
+  .edition-bar strong { opacity: 1; color: #fff; font-weight: 500; }
+
+  /* ── layout grid ── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 0;
+    border-bottom: 1px solid var(--rule);
+    animation: fadeUp 0.5s 0.15s ease both;
+  }
+
+  .col-left { border-right: 1px solid var(--rule); padding: 32px 32px 32px 0; }
+  .col-right { padding: 32px 0 32px 32px; }
+
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    animation: fadeUp 0.5s 0.25s ease both;
+  }
+
+  .bottom-col {
+    padding: 28px 0;
+    border-right: 1px solid var(--rule);
+    padding-right: 28px;
+    padding-left: 28px;
+  }
+  .bottom-col:first-child { padding-left: 0; }
+  .bottom-col:last-child { border-right: none; padding-right: 0; }
+
+  .full-width-section {
+    border-top: 1px solid var(--rule);
+    padding: 28px 0;
+    animation: fadeUp 0.5s 0.35s ease both;
+  }
+
+  /* ── section headers ── */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink3);
+  }
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  .section-label-accent {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* ── beer gardens ── */
+  .pub-entry { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--rule); }
+  .pub-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .pub-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
+  .pub-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .sun-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .sun-hot { background: #fdf0e0; color: var(--amber); border: 1px solid #f0d0a0; }
+  .sun-good { background: #e8f5ec; color: var(--green); border: 1px solid #b8dfc4; }
+  .sun-cold { background: var(--paper2); color: var(--ink3); border: 1px solid var(--paper3); }
+  .pub-meta { font-size: 12px; color: var(--ink3); line-height: 1.5; }
+  .pub-hours { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink2); margin-top: 3px; }
+
+  /* ── events ── */
+  .event-entry { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+  .event-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .event-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .event-venue {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .event-type-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .type-dj { background: #ede8fb; color: #4a3a9a; border: 1px solid #cdc0f0; }
+  .type-live { background: #fde8e8; color: var(--red); border: 1px solid #f0c0c0; }
+  .type-quiz { background: #e8f5ec; color: var(--green); border: 1px solid #b8dfc4; }
+  .type-market { background: #fdf0e0; color: var(--amber); border: 1px solid #f0d0a0; }
+  .event-act { font-size: 13px; color: var(--ink2); margin-top: 3px; }
+  .event-detail { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink3); margin-top: 4px; }
+
+  /* ── sport ── */
+  .sport-entry { padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .sport-entry:last-child { border-bottom: none; }
+  .sport-comp {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 3px;
+  }
+  .sport-match {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .sport-when { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink3); margin-top: 3px; }
+
+  /* ── markets ── */
+  .market-entry { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+  .market-entry:last-child { border-bottom: none; }
+  .market-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 5px; }
+  .market-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .market-nums { text-align: right; flex-shrink: 0; }
+  .market-val { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; }
+  .market-pct { font-family: 'DM Mono', monospace; font-size: 11px; margin-top: 2px; }
+  .up { color: var(--green); }
+  .down { color: var(--red); }
+  .flat { color: var(--ink3); }
+  .market-reason { font-size: 12px; color: var(--ink3); line-height: 1.55; }
+
+  /* ── news ── */
+  .news-entry { display: flex; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--rule); align-items: flex-start; }
+  .news-entry:last-child { border-bottom: none; }
+  .news-n {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--paper3);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 22px;
+    margin-top: 1px;
+  }
+  .news-body { flex: 1; }
+  .news-text { font-size: 13px; color: var(--ink); line-height: 1.6; }
+  .news-source { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink3); margin-top: 3px; letter-spacing: 0.05em; }
+
+  /* ── who's around ── */
+  .person-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--rule); }
+  .person-row:last-child { border-bottom: none; }
+  .avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
+    flex-shrink: 0; border: 1px solid var(--rule);
+  }
+  .av-1 { background: #e6eef8; color: var(--blue); }
+  .av-2 { background: #ede8fb; color: #4a3a9a; }
+  .av-3 { background: #e8f5ec; color: var(--green); }
+  .av-4 { background: #fdf0e0; color: var(--amber); }
+  .person-name { font-size: 13px; font-weight: 500; color: var(--ink); min-width: 52px; }
+  .person-plan { font-size: 12px; color: var(--ink3); flex: 1; line-height: 1.4; }
+  .status-home { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); }
+  .status-away { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); }
+
+  /* ── thought of the day ── */
+  .thought-wrap {
+    border-top: 3px double var(--ink);
+    border-bottom: 3px double var(--ink);
+    padding: 28px 0;
+    text-align: center;
+    margin: 0;
+  }
+  .thought-kicker {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .thought-q {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.45;
+    max-width: 680px;
+    margin: 0 auto 14px;
+  }
+  .thought-context {
+    font-size: 13px;
+    color: var(--ink3);
+    font-style: italic;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ── whatsapp preview ── */
+  .wa-section { border-top: 1px solid var(--rule); padding: 28px 0 0; }
+  .wa-phone {
+    background: #e5ddd5;
+    border-radius: 12px;
+    padding: 16px;
+    max-width: 380px;
+  }
+  .wa-bubble {
+    background: #fff;
+    border-radius: 0 8px 8px 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: #303030;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  .wa-bubble .wa-sender { font-size: 12px; font-weight: 500; color: #1a6b3c; margin-bottom: 5px; }
+  .wa-bubble .wa-link { color: #1a6b3c; text-decoration: underline; font-size: 12px; }
+  .wa-time { font-size: 10px; color: #999; text-align: right; margin-top: 4px; }
+
+  /* ── footer ── */
+  .footer {
+    border-top: 3px solid var(--ink);
+    margin-top: 40px;
+    padding: 16px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--ink3);
+    letter-spacing: 0.08em;
+    animation: fadeUp 0.5s 0.4s ease both;
+  }
+
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:none; } }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+
+  @media (max-width: 768px) {
+    .masthead { padding: 20px; flex-direction: column; align-items: flex-start; }
+    .masthead-right { text-align: left; }
+    .edition-bar { padding: 7px 20px; }
+    .container { padding: 0 20px; }
+    .main-grid { grid-template-columns: 1fr; }
+    .col-left { border-right: none; border-bottom: 1px solid var(--rule); padding: 24px 0; }
+    .col-right { padding: 24px 0; }
+    .bottom-grid { grid-template-columns: 1fr; }
+    .bottom-col { border-right: none; border-bottom: 1px solid var(--rule); padding: 20px 0; }
+    .bottom-col:last-child { border-bottom: none; }
+    .footer { flex-direction: column; gap: 6px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-left">
+    <p class="masthead-kicker">Bow, East London — Est. 2025</p>
+    <h1 class="masthead-title">The Bow<span>.</span><br>Brief</h1>
+  </div>
+  <div class="masthead-right">
+    <span class="masthead-date" id="display-date">Saturday 26 April 2025</span>
+    <span>Hackney · Dalston · Bethnal Green · Shoreditch</span><br>
+    <span>Delivered 08:00 daily</span><br>
+    <span>4 residents · 1 digest</span>
+  </div>
+</div>
+
+<div class="edition-bar">
+  <div><span>Weather </span><strong id="hdr-weather">19°C, sunny spells</strong></div>
+  <div><span>FTSE </span><strong class="up" id="hdr-ftse">+0.62%</strong></div>
+  <div><span>S&P </span><strong class="down" id="hdr-sp">-0.84%</strong></div>
+  <div><span>Top story </span><strong id="hdr-news">UK inflation hits 3yr low</strong></div>
+</div>
+
+<div class="container">
+
+  <!-- main two-col grid: beer gardens + events left, sport + who's around right -->
+  <div class="main-grid">
+
+    <div class="col-left">
+      <!-- Beer gardens -->
+      <div class="section-head">
+        <span class="section-label-accent">Beer gardens</span>
+        <div class="section-rule"></div>
+        <span class="section-label">Sun forecast today</span>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-top">
+          <span class="pub-name">The Pembury Tavern</span>
+          <span class="sun-pill sun-hot">Peak sun</span>
+        </div>
+        <div class="pub-meta">Hackney Downs · south-facing garden</div>
+        <div class="pub-hours">Sunny 12:00 – 18:00 · 19°C · low wind</div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-top">
+          <span class="pub-name">The Dove Freehouse</span>
+          <span class="sun-pill sun-good">Good window</span>
+        </div>
+        <div class="pub-meta">Broadway Market · west-facing terrace</div>
+        <div class="pub-hours">Sunny 13:00 – 17:00 · 18°C</div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-top">
+          <span class="pub-name">Netil360 Rooftop</span>
+          <span class="sun-pill sun-good">Good window</span>
+        </div>
+        <div class="pub-meta">London Fields · open rooftop</div>
+        <div class="pub-hours">Sunny 11:00 – 15:00 · 18°C · breezy</div>
+      </div>
+
+      <div class="pub-entry">
+        <div class="pub-top">
+          <span class="pub-name">The Cat &amp; Mutton</span>
+          <span class="sun-pill sun-cold">Cloudy all day</span>
+        </div>
+        <div class="pub-meta">Broadway Market · north-facing garden</div>
+        <div class="pub-hours">Overcast · skip today</div>
+      </div>
+
+      <!-- Events -->
+      <div class="section-head" style="margin-top:28px;">
+        <span class="section-label-accent">Events</span>
+        <div class="section-rule"></div>
+        <span class="section-label">Tonight &amp; this weekend</span>
+      </div>
+
+      <div class="event-entry">
+        <div class="event-top">
+          <span class="event-venue">Fold</span>
+          <span class="event-type-pill type-dj">DJ night</span>
+        </div>
+        <div class="event-act">Shackleton b2b Burial</div>
+        <div class="event-detail">Canning Town · Sat 22:00 · £15 adv</div>
+      </div>
+
+      <div class="event-entry">
+        <div class="event-top">
+          <span class="event-venue">Oval Space</span>
+          <span class="event-type-pill type-live">Live music</span>
+        </div>
+        <div class="event-act">Floating Points — full live set</div>
+        <div class="event-detail">Bethnal Green · Sat 21:00 · £22</div>
+      </div>
+
+      <div class="event-entry">
+        <div class="event-top">
+          <span class="event-venue">Dance Tunnel</span>
+          <span class="event-type-pill type-dj">DJ night</span>
+        </div>
+        <div class="event-act">Hunee &amp; Antal — Red Light Radio takeover</div>
+        <div class="event-detail">Dalston · Fri 23:00 · £12 door</div>
+      </div>
+
+      <div class="event-entry">
+        <div class="event-top">
+          <span class="event-venue">The Nag's Head</span>
+          <span class="event-type-pill type-quiz">Pub quiz</span>
+        </div>
+        <div class="event-act">Weekly general knowledge — £2 pp</div>
+        <div class="event-detail">Hackney · Sun 19:00 · free entry</div>
+      </div>
+
+      <div class="event-entry">
+        <div class="event-top">
+          <span class="event-venue">Broadway Market</span>
+          <span class="event-type-pill type-market">Market</span>
+        </div>
+        <div class="event-act">100+ stalls — food, vintage, records</div>
+        <div class="event-detail">Hackney · Sat 09:00 – 17:00 · free</div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <!-- Sport -->
+      <div class="section-head">
+        <span class="section-label-accent">Sport</span>
+        <div class="section-rule"></div>
+        <span class="section-label">This weekend</span>
+      </div>
+
+      <div class="sport-entry">
+        <div class="sport-comp">Premier League</div>
+        <div class="sport-match">Arsenal vs Manchester United</div>
+        <div class="sport-when">Sat · 15:00 · Emirates</div>
+      </div>
+      <div class="sport-entry">
+        <div class="sport-comp">Champions League</div>
+        <div class="sport-match">Chelsea vs Real Madrid</div>
+        <div class="sport-when">Wed · 20:00 · Stamford Bridge</div>
+      </div>
+      <div class="sport-entry">
+        <div class="sport-comp">Premiership Rugby</div>
+        <div class="sport-match">Harlequins vs Saracens</div>
+        <div class="sport-when">Sat · 17:30 · Twickenham Stoop</div>
+      </div>
+      <div class="sport-entry">
+        <div class="sport-comp">Formula 1</div>
+        <div class="sport-match">Emilia Romagna Grand Prix</div>
+        <div class="sport-when">Sun · 14:00 · Imola</div>
+      </div>
+      <div class="sport-entry">
+        <div class="sport-comp">UFC 313</div>
+        <div class="sport-match">Pereira vs Ankalaev</div>
+        <div class="sport-when">Sat · 01:00 · Las Vegas</div>
+      </div>
+
+      <!-- Who's around -->
+      <div class="section-head" style="margin-top:28px;">
+        <span class="section-label-accent">Who's around</span>
+        <div class="section-rule"></div>
+        <span class="section-label">Today</span>
+      </div>
+
+      <div class="person-row">
+        <div class="avatar av-1">JT</div>
+        <span class="person-name">Jake</span>
+        <span class="person-plan">Free all day, up for the pub</span>
+        <span class="status-home">Home</span>
+      </div>
+      <div class="person-row">
+        <div class="avatar av-2">SL</div>
+        <span class="person-name">Sophie</span>
+        <span class="person-plan">Back from 5pm</span>
+        <span class="status-home">Home</span>
+      </div>
+      <div class="person-row">
+        <div class="avatar av-3">MK</div>
+        <span class="person-name">Marcus</span>
+        <span class="person-plan">Away this weekend, back Mon</span>
+        <span class="status-away">Away</span>
+      </div>
+      <div class="person-row">
+        <div class="avatar av-4">RB</div>
+        <span class="person-name">Rosa</span>
+        <span class="person-plan">Working til 3pm, free after</span>
+        <span class="status-home">Home</span>
+      </div>
+
+      <!-- Markets (right col, below who's around) -->
+      <div class="section-head" style="margin-top:28px;">
+        <span class="section-label-accent">Markets</span>
+        <div class="section-rule"></div>
+        <span class="section-label">This morning</span>
+      </div>
+
+      <div class="market-entry">
+        <div class="market-top">
+          <span class="market-name">S&amp;P 500</span>
+          <div class="market-nums">
+            <div class="market-val down">5,218</div>
+            <div class="market-pct down">-0.84%</div>
+          </div>
+        </div>
+        <div class="market-reason">Fed signalled fewer rate cuts than expected; big tech led the pullback.</div>
+      </div>
+
+      <div class="market-entry">
+        <div class="market-top">
+          <span class="market-name">FTSE 100</span>
+          <div class="market-nums">
+            <div class="market-val up">8,391</div>
+            <div class="market-pct up">+0.62%</div>
+          </div>
+        </div>
+        <div class="market-reason">Energy stocks rallied after oil climbed on fresh supply concerns.</div>
+      </div>
+
+      <div class="market-entry">
+        <div class="market-top">
+          <span class="market-name">Emerging markets</span>
+          <div class="market-nums">
+            <div class="market-val flat">1,043</div>
+            <div class="market-pct flat">+0.03%</div>
+          </div>
+        </div>
+        <div class="market-reason">Dollar strength weighed on EM currencies; China property data mixed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- bottom three-col: news only (sport already above) -->
+  <div class="bottom-grid">
+    <div class="bottom-col" style="grid-column: 1 / -1; padding-left:0; padding-right:0; border-right:none;">
+      <div class="section-head">
+        <span class="section-label-accent">Breaking news</span>
+        <div class="section-rule"></div>
+        <span class="section-label">Top 3 stories</span>
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:0;">
+        <div style="padding-right:28px; border-right:1px solid var(--rule);">
+          <div class="news-entry" style="padding-top:0;">
+            <span class="news-n">1</span>
+            <div class="news-body">
+              <div class="news-text">UK inflation fell to 2.3% in April — its lowest since 2021 — raising expectations of a Bank of England rate cut as early as June.</div>
+              <div class="news-source">BBC News</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 28px; border-right:1px solid var(--rule);">
+          <div class="news-entry" style="padding-top:0;">
+            <span class="news-n">2</span>
+            <div class="news-body">
+              <div class="news-text">Ceasefire talks between Israel and Hamas resumed in Cairo under a new US-backed framework, with an outcome expected within 48 hours.</div>
+              <div class="news-source">Reuters</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding-left:28px;">
+          <div class="news-entry" style="padding-top:0;">
+            <span class="news-n">3</span>
+            <div class="news-body">
+              <div class="news-text">OpenAI confirmed it is developing its own in-house chip, aiming to reduce dependence on Nvidia as the AI hardware arms race accelerates.</div>
+              <div class="news-source">Financial Times</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thought of the day -->
+  <div class="thought-wrap">
+    <div class="thought-kicker">Today's question — discuss over dinner</div>
+    <p class="thought-q">"If you could only own one asset for the next 20 years and couldn't touch it — stocks, property, gold, or cash — which would you pick and why?"</p>
+    <p class="thought-context">Relevant today: the Fed held rates, UK inflation dropped, and the FTSE hit a monthly high. Money is on everyone's mind.</p>
+  </div>
+
+  <!-- WhatsApp preview -->
+  <div class="wa-section">
+    <div class="section-head">
+      <span class="section-label">Whatsapp message sent at 08:00</span>
+      <div class="section-rule"></div>
+    </div>
+    <div class="wa-phone">
+      <div class="wa-bubble">
+        <div class="wa-sender">The Bow Bot</div>
+        Good morning house! Here's your Saturday brief.<br><br>
+        ☀️ Sunniest garden: Pembury (12–6pm, 19°C)<br>
+        🎧 Tonight: Fold — Shackleton b2b Burial (£15)<br>
+        ⚽ Arsenal vs Man Utd, 3pm<br>
+        🏠 Home today: Jake (all day), Sophie (5pm+), Rosa (3pm+)<br>
+        📈 FTSE +0.62% · S&P -0.84%<br><br>
+        Full digest: <span class="wa-link">bow-house.vercel.app</span>
+        <div class="wa-time">08:00 ✓✓</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>The Bow Brief · Bow, East London</span>
+    <span>Auto-generated daily at 08:00 · Powered by Make.com + Claude</span>
+    <span id="footer-date">Est. 2025</span>
+  </div>
+
+</div>
+
+<script>
+  const now = new Date();
+  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  const dateStr = now.toLocaleDateString('en-GB', opts);
+  document.getElementById('display-date').textContent = dateStr;
+  document.getElementById('footer-date').textContent = 'Generated ' + now.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+</script>
+</body>
+</html>
